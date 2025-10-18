@@ -26,4 +26,4 @@ jobs:
         with:
           args: deploy --only hosting
         env:
-          GCP_SA_KEY: ${{ secrets.GCP_CREDENTIALS }}  # Map GCP_CREDENTIALS to GCP_SA_KEY
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
