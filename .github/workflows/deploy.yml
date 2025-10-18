@@ -3,7 +3,7 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main  # Change to "master" if your default branch is master
+      - main
 
 jobs:
   build_and_deploy:
@@ -26,4 +26,4 @@ jobs:
         with:
           args: deploy --only hosting
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+          GCP_SA_KEY: ${{ secrets.GCP_CREDENTIALS }}  # Map GCP_CREDENTIALS to GCP_SA_KEY
