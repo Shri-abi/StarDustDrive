@@ -7,10 +7,69 @@
   <link rel="stylesheet" href="styles.css">
   <!-- CryptoJS CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-  <!-- Firebase CDN -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+  <!-- Inline Script for Modal Functions -->
+  <script>
+    function showLoginModal() {
+      const loginModal = document.getElementById('login-modal');
+      if (loginModal) {
+        loginModal.classList.remove('hidden');
+        if ('showModal' in loginModal) {
+          loginModal.showModal();
+          console.log('Login modal shown with showModal');
+        } else {
+          loginModal.style.display = 'block';
+          loginModal.style.zIndex = '1001'; // Ensure it appears above other elements
+          console.log('Login modal shown with fallback display');
+        }
+      } else {
+        console.error('Login modal not found');
+      }
+    }
+
+    function showRegisterModal() {
+      const registerModal = document.getElementById('register-modal');
+      if (registerModal) {
+        registerModal.classList.remove('hidden');
+        if ('showModal' in registerModal) {
+          registerModal.showModal();
+          console.log('Register modal shown with showModal');
+        } else {
+          registerModal.style.display = 'block';
+          registerModal.style.zIndex = '1001'; // Ensure it appears above other elements
+          console.log('Register modal shown with fallback display');
+        }
+      } else {
+        console.error('Register modal not found');
+      }
+    }
+
+    function closeLoginModal() {
+      const loginModal = document.getElementById('login-modal');
+      if (loginModal) {
+        if ('close' in loginModal) {
+          loginModal.close();
+        }
+        loginModal.classList.add('hidden');
+        console.log('Login modal closed');
+      } else {
+        console.error('Login modal not found');
+      }
+    }
+
+    function closeRegisterModal() {
+      const registerModal = document.getElementById('register-modal');
+      if (registerModal) {
+        if ('close' in registerModal) {
+          registerModal.close();
+        }
+        registerModal.classList.add('hidden');
+        console.log('Register modal closed');
+      } else {
+        console.error('Register modal not found');
+      }
+    }
+  </script>
 </head>
 <body>
   <!-- Background Video -->
@@ -23,7 +82,7 @@
   <nav class="glass-nav">
     <div class="company-name">StarDust Drive</div>
     <div class="nav-items">
-      <div class="nav-item dropdown">
+      <div class="nav-item dropdown" onclick="togglePlansDropdown()">
         Plans
         <div class="dropdown-content">
           <a href="https://www.toyotafinancial.com/us/en/vehicle_protection_plan/vehicle_service_agreements.html" target="_blank">Vehicle Service Agreements</a>
@@ -111,6 +170,33 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <!-- Firebase Initialization -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDk0xWrvSdrIV9BUM2Y0E6_9tfRG-iRVWo",
+      authDomain: "stardustdrive-dfbfe.firebaseapp.com",
+      projectId: "stardustdrive-dfbfe",
+      storageBucket: "stardustdrive-dfbfe.firebasestorage.app",
+      messagingSenderId: "1001042312857",
+      appId: "1:1001042312857:web:4d6ce51d8ce7bc62898208",
+      measurementId: "G-ZLSNQNHWEN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.firebaseApp = app;
+    window.auth = auth;
+    window.db = db;
+    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword; // Expose the function globally
+    console.log('Firebase initialized with version 12.4.0');
+  </script>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>

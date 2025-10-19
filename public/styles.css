@@ -82,8 +82,8 @@ body {
     background: rgba(255, 255, 255, 0.2);
   }
   
-  .dropdown:hover .dropdown-content {
-    display: block; /* Ensure dropdown is visible on hover */
+  .nav-item.dropdown.active .dropdown-content {
+    display: block !important; /* Force display when active */
   }
   
   .nav-item:hover {
@@ -121,7 +121,9 @@ body {
     background: #00cccc;
   }
   
-  dialog#finance-section {
+  dialog#finance-section,
+  dialog#login-modal,
+  dialog#register-modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -155,7 +157,7 @@ body {
   }
   
   .hidden {
-    display: none; /* Initial hidden state */
+    display: none !important; /* Ensure hidden state overrides other styles */
     opacity: 0;
     transform: translateY(20px);
   }
@@ -247,7 +249,7 @@ body {
   }
   
   .glass-modal.hidden {
-    display: none; /* Initial hidden state */
+    display: none !important; /* Ensure hidden state overrides other styles */
     opacity: 0;
     transform: translate(-50%, -40%) scale(0.9);
   }
