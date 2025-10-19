@@ -111,7 +111,7 @@
     <form id="financeForm">
       <label>First Name:</label><input type="text" id="firstName" required><br>
       <label>Last Name:</label><input type="text" id="lastName" required><br>
-      <label>Date of Birth (YYYY-MM-DD):</label><input type="date" id="dob" required><br>
+      <label>Date of Birth (DD-MM-YYYY):</label><input type="date" id="dob" required><br>
       <label>Last 4 Digits of SSN:</label><input type="text" id="ssnLast4" maxlength="4" required><br>
       <label>Income per Month ($):</label><input type="number" id="income" required><br>
       <label>Credit Score (300-850):</label><input type="number" id="credit" min="300" max="850" required><br>
@@ -196,7 +196,6 @@
     window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
     window.collection = collection;
     window.addDoc = addDoc;
-    window.getDocs = getDocs;
     console.log('Firebase initialized with version 12.4.0');
   </script>
 

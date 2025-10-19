@@ -304,11 +304,12 @@ window.togglePlansDropdown = function () {
   const plansDropdown = document.querySelector('.nav-item.dropdown');
   const dropdownContent = plansDropdown ? plansDropdown.querySelector('.dropdown-content') : null;
   if (dropdownContent) {
-    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+    const currentDisplay = dropdownContent.style.display || getComputedStyle(dropdownContent).display;
+    dropdownContent.style.display = currentDisplay === 'block' ? 'none' : 'block';
     plansDropdown.classList.toggle('active');
-    console.log('Plans dropdown toggled to:', dropdownContent.style.display);
+    console.log('Plans dropdown toggled to:', dropdownContent.style.display, 'from computed:', currentDisplay);
   } else {
-    console.error('Dropdown content not found');
+    console.error('Dropdown content not found. PlansDropdown:', plansDropdown);
   }
 };
 
