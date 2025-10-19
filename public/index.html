@@ -5,22 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StarDust Drive - Toyota Financing</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- CryptoJS CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 </head>
 <body>
   <!-- Background Video -->
   <video autoplay muted loop id="background-video">
-    <source src="https://www.toyota.com/videos/2023-camry-showcase.mp4" type="video/mp4"> <!-- Replace with local file or valid URL -->
-    Background videos are not available.
+    <source src="Toyotacar.mp4" type="video/mp4">
+    Your browser does not support the video tag.
   </video>
 
   <!-- Top Navigation Bar -->
   <nav class="glass-nav">
     <div class="company-name">StarDust Drive</div>
     <div class="nav-items">
-      <div class="nav-item">Login</div>
-      <div class="nav-item">Plans</div>
+      <div class="nav-item dropdown" onclick="togglePlansDropdown()">
+        Plans
+        <div class="dropdown-content">
+          <a href="https://www.toyotafinancial.com/us/en/vehicle_protection_plan/vehicle_service_agreements.html" target="_blank">Vehicle Service Agreements</a>
+          <a href="https://www.toyotafinancial.com/us/en/vehicle_protection_plan/guaranteed_auto_protection.html" target="_blank">Guaranteed Auto Protection</a>
+          <a href="https://www.toyotafinancial.com/us/en/vehicle_protection_plan/prepaid_maintenance_plan.html" target="_blank">Prepaid Maintenance Plans</a>
+          <a href="https://www.toyotafinancial.com/us/en/vehicle_protection_plan/tire_wheel_protection.html" target="_blank">Tire & Wheel Protection</a>
+          <a href="https://www.toyotafinancial.com/us/en/vehicle_protection_plan/excess_wear_use_protection.html" target="_blank">Excess Wear & Use Protection</a>
+          <a href="https://www.toyotafinancial.com/us/en/vehicle_protection_plan/how_to_file_a_claim.html" target="_blank">How to File a Claim</a>
+        </div>
+      </div>
+      <div class="nav-item" onclick="showLoginModal()">Login</div>
+      <div class="nav-item" onclick="showRegisterModal()">Register</div>
       <div class="nav-item">Menu</div>
-      <div class="nav-item">Solutions</div>
     </div>
   </nav>
 
@@ -30,40 +46,19 @@
   </div>
 
   <!-- Finance Form Section (Hidden Initially) -->
-  <div id="finance-section" class="glass-form hidden">
+  <dialog id="finance-section" class="glass-form hidden">
+    <div class="shooting-stars-background"></div>
     <h2>Finance Your Toyota</h2>
     <form id="financeForm">
       <label>First Name:</label><input type="text" id="firstName" required><br>
       <label>Last Name:</label><input type="text" id="lastName" required><br>
       <label>Date of Birth (YYYY-MM-DD):</label><input type="date" id="dob" required><br>
       <label>Last 4 Digits of SSN:</label><input type="text" id="ssnLast4" maxlength="4" required><br>
-      <label>Monthly Salary ($):</label><input type="number" id="salary" required><br>
+      <label>Income per Month ($):</label><input type="number" id="income" required><br>
       <label>Credit Score (300-850):</label><input type="number" id="credit" min="300" max="850" required><br>
-      <label>Down Payment ($):</label><input type="number" id="down" required><br>
-      <label>Loan/Lease Term (months):</label><input type="number" id="term" required><br>
-      <label>Buy or Lease:</label>
-      <select id="type">
-        <option value="buy">Buy (Financing)</option>
-        <option value="lease">Lease</option>
-      </select><br>
-      <label>Vehicle Type Preference:</label>
-      <select id="vehicleType">
-        <option value="any">Any</option>
-        <option value="Sedans">Sedan</option>
-        <option value="SUVs">SUV</option>
-        <option value="Trucks">Truck</option>
-        <option value="Other">Other</option>
-      </select><br>
-      <label>Fuel Type Preference:</label>
-      <select id="fuelType">
-        <option value="any">Any</option>
-        <option value="Gas">Gas</option>
-        <option value="Hybrid">Hybrid</option>
-        <option value="Plug-in Hybrid">Plug-in Hybrid</option>
-        <option value="Battery EV">Battery EV</option>
-        <option value="Fuel Cell EV">Fuel Cell EV</option>
-      </select><br>
+      <label>Car Preference:</label><input type="text" id="preference" required><br>
       <button type="button" onclick="submitForm()">Submit</button>
+      <button type="button" onclick="closeForm()">Close</button>
     </form>
     <div id="results" class="results" style="display:none;">
       <h3>Payment Simulation</h3>
@@ -75,14 +70,40 @@
       <h3>Financial Tips</h3>
       <ul id="tips"></ul>
     </div>
-  </div>
+  </dialog>
+
+  <!-- Login Modal -->
+  <dialog id="login-modal" class="glass-modal hidden">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <label>Email:</label><input type="email" id="loginEmail" required><br>
+      <label>Password:</label><input type="password" id="loginPassword" minlength="8" required><br>
+      <button type="button" onclick="loginUser()">Login</button>
+    </form>
+    <button type="button" onclick="closeLoginModal()">Close</button>
+    <p>Or login with:</p>
+    <button type="button" onclick="loginWithGoogle()">Google</button>
+    <button type="button" onclick="loginWithPhone()">Phone</button>
+    <button type="button" onclick="loginPasswordless()">Passwordless</button>
+  </dialog>
+
+  <!-- Register Modal -->
+  <dialog id="register-modal" class="glass-modal hidden">
+    <h2>Register</h2>
+    <form id="registerForm">
+      <label>Email:</label><input type="email" id="registerEmail" required><br>
+      <label>Password:</label><input type="password" id="registerPassword" minlength="8" required><br>
+      <button type="button" onclick="registerUser()">Register</button>
+    </form>
+    <button type="button" onclick="closeRegisterModal()">Close</button>
+  </dialog>
 
   <!-- Footer -->
   <footer class="glass-footer">
     <div class="footer-content">
       <p>&copy; 2025 StarDust Drive. All rights reserved.</p>
       <div class="social-links">
-        <a href="#">Facebook</a> | <a href="#">Twitter</a> | <a href="#">Instagram</a>
+        <a href="https://x.com/toyotafinancial?lang=en">X</a> | <a href="https://www.facebook.com/toyotafinancial/">Facebook</a> | <a href="https://www.instagram.com/toyotafinancial/">Instagram</a>
       </div>
       <div class="locations">
         <p>Locations: Dallas, TX | Austin, TX | Houston, TX</p>
