@@ -19,7 +19,7 @@
           console.log('Login modal shown with showModal');
         } else {
           loginModal.style.display = 'block';
-          loginModal.style.zIndex = '1001'; // Ensure it appears above other elements
+          loginModal.style.zIndex = '1001';
           console.log('Login modal shown with fallback display');
         }
       } else {
@@ -36,7 +36,7 @@
           console.log('Register modal shown with showModal');
         } else {
           registerModal.style.display = 'block';
-          registerModal.style.zIndex = '1001'; // Ensure it appears above other elements
+          registerModal.style.zIndex = '1001';
           console.log('Register modal shown with fallback display');
         }
       } else {
@@ -174,7 +174,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
     import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
-    import { getFirestore } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
+    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyDk0xWrvSdrIV9BUM2Y0E6_9tfRG-iRVWo",
@@ -193,7 +193,10 @@
     window.firebaseApp = app;
     window.auth = auth;
     window.db = db;
-    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword; // Expose the function globally
+    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+    window.collection = collection;
+    window.addDoc = addDoc;
+    window.getDocs = getDocs;
     console.log('Firebase initialized with version 12.4.0');
   </script>
 
