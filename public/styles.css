@@ -82,8 +82,8 @@ body {
     background: rgba(255, 255, 255, 0.2);
   }
   
-  .nav-item.dropdown.active .dropdown-content {
-    display: block; /* Ensure dropdown is visible when active */
+  .dropdown:hover .dropdown-content {
+    display: block; /* Ensure dropdown is visible on hover */
   }
   
   .nav-item:hover {
